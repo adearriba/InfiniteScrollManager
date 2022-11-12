@@ -1,0 +1,32 @@
+{
+  "name": "infinitescrollmanager",
+  "version": "1.0.0",
+  "description": "Ajax pagination plugin for Shopify themes inspired by Ajaxinate",
+  "main": "infiniteScrollManager.js",
+  "scripts": {
+    "test": "npx eslint src/**"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adearriba/InfiniteScrollManager.git"
+  },
+  "keywords": [
+    "infinitescroll",
+    "shopify",
+    "pagination",
+    "shopify-theme",
+    "ajax-pagination-plugin",
+    "infinite-scroll",
+    "ajax"
+  ],
+  "author": "adearriba",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/adearriba/InfiniteScrollManager/issues"
+  },
+  "homepage": "https://github.com/adearriba/InfiniteScrollManager#readme",
+  "devDependencies": {
+    "eslint": "^8.27.0",
+    "gulp": "^4.0.2"
+  }
+}
