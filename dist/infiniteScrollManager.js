@@ -131,7 +131,7 @@ class InfiniteScrollManager {
         if(loadSrc == this.paginationPreviousElement)
         {
             this.onHttpRequestLoadPrevious(request, response);
-        }else{
+        }else {
             this.onHttpRequestLoadNext(request, response);
         }
     }
@@ -285,18 +285,5 @@ class InfiniteScrollManager {
         }
     }
 }
-/**
- * @typedef {Object} Configuration
- * @property {string} [container] CSS selector for the container where data will be displayed and added after loads.
- * @property {string} [paginationPrevious] CSS selector for the pagination element with the previous page URL.
- * @property {string} [paginationNext] CSS selector for the pagination element with the next page URL.
- * @property {number} [threshold] From 0 to 1. A value of 0.0 means that even a single visible pixel counts as the target being visible. 1.0 means that the entire target element is visible.
- * @property {boolean} [enableHtml5History] Push or not each page to the browser's history API.
- * @property {string} [pageQueryParamName] Query parameter name used for specifying current page.
- * @property {number} [margin] From 0 (0%) to 1 (100%) the margin used to identify intersections with pagination elements.
- * @property {boolean} [debug] If true, it will print out each function call with the current page value.
- * @property {string} [pageTitle] Title displayed above each page content. Use '{pageNum}' to insert the page number.
- */
 
- export { InfiniteScrollManager };
- export default InfiniteScrollManager;
+export { InfiniteScrollManager, InfiniteScrollManager as default };
