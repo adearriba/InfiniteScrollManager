@@ -1,3 +1,15 @@
+function debounce(func, delay = 300) {
+    let timer;
+
+    return (...args) => {
+        clearTimeout(timer);
+
+        timer = setTimeout(() => {
+            func.apply(this, args);
+        }, delay);
+    }
+}
+
 class InfiniteScrollManager {
     /**
      * Creates a new Infinite scroll manager. Configuration options:
@@ -53,8 +65,8 @@ class InfiniteScrollManager {
      */
     initializePageLoadObserver() {
         const marginInPx = this.containerElement.clientHeight * this.settings.margin;
-
-        this.intersectionObserver = new IntersectionObserver(this.onIntersection.bind(this), {
+        
+        this.intersectionObserver = new IntersectionObserver(debounce(this.onIntersection.bind(this)), {
             threshold: this.settings.threshold,
             rootMargin: `${marginInPx}px 0px ${marginInPx}px 0px`,
         });
@@ -67,7 +79,7 @@ class InfiniteScrollManager {
      * Initializes PageChange Observer: Observes PageDivision elements to change current page and/or push history state
      */
     initializePageChangeObserver() {
-        this.pageChangeObserver = new IntersectionObserver(this.onPageChange.bind(this));
+        this.pageChangeObserver = new IntersectionObserver(debounce(this.onPageChange.bind(this), 1000));
 
         this.containerElement.prepend(this.createPageDivision(this.currentPage));
         this.pageChangeObserver.observe(document.querySelector(`[data-page="${this.currentPage}"]`));
@@ -113,7 +125,7 @@ class InfiniteScrollManager {
      * @param {HTMLElement} loadSrc Pagination element that triggered the function
      */
     loadMore(loadSrc) {
-        this.debug('loadMore - '+this.currentPage);
+        this.debug(`Loading page. Current page: ${this.currentPage}`);
         const nextPageLinkElement = loadSrc.querySelector('a');
 
         if (!nextPageLinkElement) {
@@ -143,15 +155,16 @@ class InfiniteScrollManager {
      */
     onHttpRequestLoadPrevious(request, response) {
         const currentScrollY = window.scrollY;
-        this.debug('onHttpRequestLoadPrevious - '+this.currentPage);
-
+        
         if (!request.responseText) { return; }
         if (!request.readyState === 4 || !request.status === 200) { return; }
-
+        
         const newContainer = response.querySelector(this.settings.container).firstElementChild;
         const newPagination = response.querySelector(this.settings.paginationPrevious);
-
+        
         this.currentPage--;
+        this.debug(`onHttpRequestLoadPrevious. Loading page: ${this.currentPage}`);
+
         this.minPageLoaded = Math.min(this.currentPage, this.minPageLoaded - 1); 
         this.containerElement.prepend(newContainer);
 
@@ -179,13 +192,12 @@ class InfiniteScrollManager {
      * @param {Document} response Response as an HTML document
      */
     onHttpRequestLoadNext(request, response) {
-        this.debug('onHttpRequestLoadNext - '+this.currentPage);
-
         if (!request.responseText) { return; }
         if (!request.readyState === 4 || !request.status === 200) { return; }
-
+        
         this.currentPage++;  
-
+        this.debug(`onHttpRequestLoadNext. Loading page: ${this.currentPage}`);
+        
         const newContainer = response.querySelector(this.settings.container);
         const newPagination = response.querySelector(this.settings.paginationNext);
         
@@ -206,7 +218,7 @@ class InfiniteScrollManager {
      */
     pushHtml5History() {
         if(window.history.state?.page && window.history.state.page == this.currentPage) return;
-        this.debug('pushHtml5History - '+this.currentPage);
+        this.debug(`pushHtml5History. Page: ${this.currentPage}`);
 
         if(this.settings.enableHtml5History) {
             const url = new URL(window.location);
@@ -224,7 +236,7 @@ class InfiniteScrollManager {
      * @returns {HTMLElement} DIV with page number
      */
     createPageDivision(page) {
-        this.debug('createPageDivision - '+page);
+        this.debug(`createPageDivision. Page: ${this.currentPage}`);
 
         const divider = document.createElement('div');
         divider.dataset.page = page;
@@ -281,7 +293,7 @@ class InfiniteScrollManager {
      */
     debug(message) {
         if(this.settings.debug) {
-            console.log(message);
+            console.log(`[InfiniteScroll] ${message}`);
         }
     }
 }
