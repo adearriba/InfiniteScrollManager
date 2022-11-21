@@ -61,17 +61,17 @@ document.addEventListener('DOMContentLoaded', function () {
 ## Configuration Settings
 All settings are optional. You aren't forced to pass a config object to the constructor. Nevertheless, you have multiple settings you can tweak.
 
-| Param | Type | Description |
-| --- | --- | --- |
-| `container` | `string?` | CSS selector for the container where data will be displayed and added after loads. |
-| `paginationPrevious` | `string?` | CSS selector for the pagination element with the previous page URL. |
-| `paginationNext` | `string?` | CSS selector for the pagination element with the next page URL. |
-| `threshold` | `number?` | From 0 to 1. A value of 0.0 means that even a single visible pixel counts as the target being visible. 1.0 means that the entire target element is visible. |
-| `enableHtml5History` | `boolean?` | Push or not each page to the browser's history API. |
-| `pageQueryParamName` | `string?` | Query parameter name used for specifying current page. |
-| `margin` | `number?` | From 0 (0%) to 1 (100%) the margin used to identify intersections with pagination elements. |
-| `debug` | `boolean?` | If true, it will print out each function call with the current page value. |
-| `pageTitle` | `string?` | Title displayed above each page content. Use '{pageNum}' to insert the page number. |
+| Param | Type | Description | Default |
+| --- | --- | --- | --- |
+| `container` | `string?` | CSS selector for the container where data will be displayed and added after loads. | `'#scrollContainer'` |
+| `paginationPrevious` | `string?` | CSS selector for the pagination element with the previous page URL. | `'#scrollPaginationPrevious'` |
+| `paginationNext` | `string?` | CSS selector for the pagination element with the next page URL. | `'#scrollPaginationNext'` |
+| `threshold` | `number?` | From 0 to 1. A value of 0.0 means that even a single visible pixel counts as the target being visible. 1.0 means that the entire target element is visible. | `0` |
+| `enableHtml5History` | `boolean?` | Push or not each page to the browser's history API. | `true` |
+| `pageQueryParamName` | `string?` | Query parameter name used for specifying current page. | `'page'` |
+| `margin` | `number?` | From 0 (0%) to 1 (100%) the margin used to identify intersections with pagination elements. | `0.3` |
+| `debug` | `boolean?` | If true, it will print out each function call with the current page value. | `false` |
+| `pageTitle` | `string?` | Title displayed above each page content. Use '{pageNum}' to insert the page number. | `'Page {pageNum}'` |
 
 ## Events
 There are 2 events that will trigger while using `infiniteScrollManager`.
