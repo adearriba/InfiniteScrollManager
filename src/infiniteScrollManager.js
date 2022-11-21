@@ -26,6 +26,10 @@ class InfiniteScrollManager {
         this.currentPage = 1;
         this.minPageLoaded = Number.MAX_VALUE;
 
+        this.containerElement = document.querySelector(this.settings.container);
+        this.paginationNextElement = document.querySelector(this.settings.paginationNext);
+        this.paginationPreviousElement = document.querySelector(this.settings.paginationPrevious);
+
         this.initialize();
     }
 
@@ -35,13 +39,10 @@ class InfiniteScrollManager {
      * Page Observer: Observes PageDivision elements to change current page and/or push history state
      */
     initialize() {
+        if (!this.containerElement) { return; }
+
         const searchParams = new URL(window.location).searchParams;
         this.currentPage = searchParams.has(this.settings.pageQueryParamName) ? searchParams.get(this.settings.pageQueryParamName) : this.currentPage;
-
-        this.containerElement = document.querySelector(this.settings.container);
-        this.paginationNextElement = document.querySelector(this.settings.paginationNext);
-        this.paginationPreviousElement = document.querySelector(this.settings.paginationPrevious);
-        if (!this.containerElement) { return; }
 
         this.initializePageLoadObserver();
         this.initializePageChangeObserver();
@@ -115,13 +116,14 @@ class InfiniteScrollManager {
      * @param {HTMLElement} loadSrc Pagination element that triggered the function
      */
     loadMore(loadSrc) {
-        this.debug(`Loading page. Current page: ${this.currentPage}`);
         const nextPageLinkElement = loadSrc.querySelector('a');
 
         if (!nextPageLinkElement) {
             this.destroy(loadSrc);
             return;
         }
+        
+        this.debug(`Loading page: ${nextPageLinkElement.href}`);
 
         const request = new XMLHttpRequest();
         request.open('GET', nextPageLinkElement.href, false);
